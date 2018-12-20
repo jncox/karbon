@@ -6,16 +6,16 @@
   :name: _labs
   :hidden:
 
-  examplelab1/examplelab1
-  examplelab2/examplelab2
+  create_kube/create_kube
+  create_wp/create_wp
 
 .. toctree::
   :maxdepth: 2
-  :caption: Optional Labs
-  :name: _optional_labs
+  :caption: Clean up
+  :name: _clean_up
   :hidden:
 
-  examplelab3/examplelab3
+  delete_wp/delete_wp
 
 .. toctree::
   :maxdepth: 2
@@ -23,8 +23,7 @@
   :name: _appendix
   :hidden:
 
-  appendix/glossary
-  appendix/otherstuff
+  appendix/prerequirements
 
 .. _getting_started:
 
