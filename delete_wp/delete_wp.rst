@@ -2,7 +2,7 @@
 .. _delete_wp:
 
 ----------------------------------------
-Delete the Created Wordpress environment
+Delete the created environment
 ----------------------------------------
 
 Overview
@@ -44,7 +44,7 @@ In the Karbon UI, under the properties of the Wordpress cluster -> Volume, there
 
 
 Deleting the Wordpress Cluster
-++++++++++++++++
+++++++++++++++++++++++++++++++
 
 Deleting the cluster is almost as easy as deleting a Virtual Machine.
 
