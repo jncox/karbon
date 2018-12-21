@@ -81,7 +81,7 @@ Click on the **Create** button to have the cluster created by the system. Follow
 
 .. note:: 
   Based on the resources available on your cluster, it will take time. 
-  **Wait until the cluster has been created before proceeding to the next part fo the module!!**
+  **Wait until the cluster has been created before proceeding to the next part of the module!!**
 
 .. image:: images/20.png
 

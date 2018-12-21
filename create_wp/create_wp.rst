@@ -10,7 +10,7 @@ Overview
 
 In this module you are going to create an application on the Kubernetes Cluster you've created earlier. The application we are going to deploy is Wordpress using MySQL as the database layer.
 
-.. note:: **Make sure you have the pre-requirements installed and ready for running!** If you are not sure please follow :ref:`prereqs` to make sure you have the required applications available.
+.. note:: **Make sure you have the pre-requirements installed and ready for running!** If you are not sure please follow :ref:`installwget` to make sure you have the required applications available.
 
 The following will be done in this module:
 
