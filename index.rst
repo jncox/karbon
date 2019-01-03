@@ -1,21 +1,32 @@
-.. title:: Introduction to Nutanix AHV
+.. title:: Nutanix Era Labs
 
 .. toctree::
   :maxdepth: 2
-  :caption: Labs
-  :name: _labs
+  :caption: Karbon Tech Summit 2019 Lab
+  :name: _karbon_tech_summit_2019_lab
   :hidden:
 
-  create_kube/create_kube
-  create_wp/create_wp
+  karbon/karbon
 
 .. toctree::
   :maxdepth: 2
-  :caption: Clean up
-  :name: _clean_up
+  :caption: Pre-Requirements
+  :name: _prerequirements
   :hidden:
 
-  delete_wp/delete_wp
+  appendix/install_wget
+  appendix/install_kubectl
+
+.. toctree::
+  :maxdepth: 2
+  :caption: Karbon Labs
+  :name: _karbon_labs
+  :hidden:
+
+  karbon_enable_and_images/karbon_enable_and_images
+  karbon_create_cluster/karbon_create_cluster
+  karbon_deploy_application/karbon_deploy_application
+  karbon_delete_application/karbon_delete_application
 
 .. toctree::
   :maxdepth: 2
@@ -23,23 +34,21 @@
   :name: _appendix
   :hidden:
 
-  appendix/prerequirements
-
 .. _getting_started:
 
 ---------------
 Getting Started
 ---------------
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed velit odio, ultrices sed elementum vitae, dictum eget turpis. Etiam ultrices orci quis tempus tempus. Nulla non nibh imperdiet, suscipit risus quis, eleifend nisl. Morbi at posuere nibh, quis bibendum dui. Morbi dictum sem a ipsum bibendum condimentum. Suspendisse id ante gravida, efficitur leo a, consequat enim. Suspendisse tempor lorem vel purus scelerisque, vel facilisis lorem consequat. Pellentesque augue orci, iaculis vel mollis sit amet, scelerisque a tellus. Aliquam commodo in lectus feugiat porta.
+Welcome to the Nutanix Karbon Labs! This workbook accompanies an instructor-led session that introduces Nutanix Karbon and many common management tasks.
+Each section has a lesson and an exercise to give you hands-on practice.
+The instructor explains the exercises and answers any additional questions that you may have.
 
 What's New
 ++++++++++
 
 - Workshop updated for the following software versions:
-  - AOS 5.6
-  - AFS 3.0
-- Added :ref:`example_lab_3`
+  - AOS & PC 5.10.x
 
 Access Instructions
 +++++++++++++++++++
