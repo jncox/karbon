@@ -218,9 +218,6 @@ Now that you have successfully run commands against your Kubernetes cluster usin
 
 #. Using your Docker VM, download the following YAML files for Wordpress and the MySQL deployment used by Wordpress:
 
-   - https://raw.githubusercontent.com/nutanixworkshops/ts2019/master/karbon/mysql-deployment.yaml
-   - https://raw.githubusercontent.com/nutanixworkshops/ts2019/master/karbon/wordpress-deployment.yaml
-
    .. code-block:: bash
 
 	wget https://kubernetes.io/examples/application/wordpress/mysql-deployment.yaml
