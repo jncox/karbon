@@ -15,6 +15,55 @@ Karbon provides a consumer-grade experience for delivering Kubernetes on-prem pr
 
 **In this lab you will deploy a Kubernetes cluster using Karbon and then deploy multiple containers, referred to as Kubernetes pods, to run a sample application.**
 
+If you already have an understanding of containers, Kubernetes, challenges, and use cases, jump to `Lab Setup`_ and `Creating a Karbon Cluster`_.
+
+What are Containers?
+....................
+
+A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another. Unlike traditional virtualization, containers are substantially more light-weight than VMs, with many containers capable of sharing the same host OS instance.
+
+.. figure:: images/overview1.png
+
+Containers provide two key features: a packaging mechanism and a runtime environment.
+
+At the runtime level, the container allows an application to run as an isolated process with its own view of the operating system. While VMs provide isolation via virtualized hardware, containers leverage the ability of the Linux kernel to provide isolated namespaces for individual processes. This lightweight nature means each application gets its own container, preventing dependency conflicts.
+
+As a packaging mechanism, a container is typically just a tarball: a way to bundle the code, configuration and dependencies of an application into a single file. This eliminates the problem of “It worked on my environment, why doesn’t it work on yours,” because everything necessary to run the application consistently is transported with the container. Ideally, applications produce the same output regardless of environment, and containerization makes that ideal a lot easier to reach. The result is a containerized application that will start, stop, make requests and log the same way.
+
+Container Benefits and Issues
+.............................
+
+For any business, containers represent a large opportunity:
+
+- Developers will spend less time debugging environment issues and more time writing code. 
+- Server bills will shrink, because more applications can fit on a server using containers than in traditional deployments. 
+- Containers can run anywhere, increasing the available deployment options. For complex applications consisting of multiple components, containers vastly simplify updates. Placing each component in a container makes it simple to make changes without having to worry about unintended interactions with other components.
+
+Use cases for containerized workloads include:
+
+- Continuous Integration Continuous Delivery (CI/CD) development
+- Application modernization/Microservices
+- API, web, and backend app development/delivery
+- Application cost containment
+- Enabling hybrid cloud
+
+While breaking down applications into microservices, or discrete functional parts, has clear benefits, having more parts to manage can introduce complexities for configuration, service discovery, load balancing, resource scaling, and discovering and fixing failures. Managing this complexity manually isn't scalable.
+
+Introducing Kubernetes
+......................
+
+`Kubernetes <https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/>`_ is an container orchestration platform, open sourced by Google in 2014, that helps manage distributed, containerized applications at massive scale. According to Redmonk, 54 %of Fortune 100 companies are running Kubernetes in some form, with adoption coming from every sector.
+
+.. figure:: images/overview2.jpg
+
+Kubernetes delivers production-grade container orchestration, automating container configuration, simplifying scaling, lifecycle management, and managing resource allocation. Kubernetes can run anywhere. Whether you want your infrastructure to run on-premise, on a public cloud, or a hybrid configuration of both.
+
+However, vanilla Kubernetes presents its own challenges that make it difficult for organizations to adopt the technology. Building your own production-ready deployment that ensures the Kubernetes environment itself is robust, easy to maintain (automated), with integrated features for things like networking, logging, analytics, and secret management, could take months.
+
+Kubernetes aggressive, quarterly release cycle (where releases are deprecated by the community after 3 quarters) can create adoption challenges for enterprises. Finally, from a supportability and risk perspective, maintaining your own custom Kubernetes stack for production applications would be analogous to using a custom-made distribution of Linux - virtually unheard of in the enterprise.
+
+As previously stated, Nutanix Karbon provides a turn-key solution to address these critical Kubernetes challenges.
+
 Lab Setup
 +++++++++
 
@@ -45,18 +94,28 @@ In this exercise you will create a development Kubernetes cluster with Nutanix K
 
      If at any point your Karbon session times out, you can log in again using your Prism Central **admin** credentials.
 
-#. To begin provisioning a Karbon cluster, click **+ Create Cluster**.
+#. Click **Download Centos** to download the required OS image to Karbon.
 
-#. Select **Development Cluster** and click **Next**.
+#. Once the download has completed, click **+ Create Kubernetes Cluster**.
 
-   .. figure:: images/02.png
+#. On the **Recommended Configurations** tab, select **Development Cluster** and click **Next**.
+
+   This will define a single worker node, master node, and etcd node.
+
+   Worker nodes are responsible for running containers deployed onto the Kubernetes cluster. Each Worker node runs the `kubelet <https://kubernetes.io/docs/admin/kubelet/>`_ and `kube-proxy <https://kubernetes.io/docs/admin/kube-proxy/>`_ services.
+
+   The Master node controls the Kubernetes cluster and provides the `kube-apiserver <https://kubernetes.io/docs/admin/kube-apiserver/>`_, `kube-controller-manager <https://kubernetes.io/docs/admin/kube-controller-manager/>`_. and `kube-scheduler <https://kubernetes.io/docs/admin/kube-scheduler/>`_ services.
+
+  `etcd <https://coreos.com/etcd/>`_ nodes provide a distributed key-value store which Kubernetes uses to manage cluster state. In this lab, you will configure a single etcd node.
+
+  .. figure:: images/karbon-configurations.png
 
 #. On the **Name and Environment** tab, fill out the following fields:
 
    - **Name** - *Initials*-karbon
    - **Cluster** - Select *Your Nutanix cluster*
-   - **Kubernetes Version** - 1.13.4
-   - **Host OS Image** - centos7.5.1804-ntnx-0.0
+   - **Kubernetes Version** - 1.13.4 (Default)
+   - **Host OS Image** - centos7.5.1804-ntnx-0.0 (Default)
 
    .. figure:: images/3.png
 
@@ -70,41 +129,7 @@ In this exercise you will create a development Kubernetes cluster with Nutanix K
 
    Next you can view the resources defined for each type of container host VMs (worker, master, and etcd). If desired, you are able to edit the resource allocations by clicking **Edit** next to each type.
 
-   Worker nodes are responsible for running containers deployed onto the Kubernetes cluster. Each Worker node runs the `kubelet <https://kubernetes.io/docs/admin/kubelet/>`_ and `kube-proxy <https://kubernetes.io/docs/admin/kube-proxy/>`_ services.
-
-   The Master node controls the Kubernetes cluster and provides the `kube-apiserver <https://kubernetes.io/docs/admin/kube-apiserver/>`_, `kube-controller-manager <https://kubernetes.io/docs/admin/kube-controller-manager/>`_. and `kube-scheduler <https://kubernetes.io/docs/admin/kube-scheduler/>`_ services.
-
-   The `etcd <https://coreos.com/etcd/>`_ nodes provide a distributed key-value store which Kubernetes uses to manage cluster state, similar to how Nutanix leverages Zookeeper.
-
-#. On the **Node Configuration** tab, fill out the following fields:
-
-   - **VM Network** - Primary
-   - **Number of Workers** - 2 (Default 1)
-   - **Memory** - 8 GiB (Defualt)
-   - **Size** - 120 GiB (Default)
-   - **VCPU** - 4 (Default)
-
-   .. figure:: images/4.png
-
-#. Click **Next**.
-
-   Next you will define the compute requirements for the **Master** and **etcd** nodes.
-
-   The Master node controls the Kubernetes cluster and provides the `kube-apiserver <https://kubernetes.io/docs/admin/kube-apiserver/>`_, `kube-controller-manager <https://kubernetes.io/docs/admin/kube-controller-manager/>`_. and `kube-scheduler <https://kubernetes.io/docs/admin/kube-scheduler/>`_ services.
-
-   The `etcd <https://coreos.com/etcd/>`_ nodes provide a distributed key-value store which Kubernetes uses to manage cluster state, similar to how Nutanix leverages Zookeeper.
-
-#. On the **Master Configuration** tab, fill out the following fields:
-
-   - **Master Resources > Memory** - 4 GiB (Default)
-   - **Master Resources > Size** - 120 GiB (Default)
-   - **Master Resources > VCPU** - 2 (Default)
-   - **etcd Resources > Number of VMs** - 3 (Default)
-   - **etcd Resources > Memory** - 4 GiB
-   - **etcd Resources > Size** - 40GiB (Default)
-   - **etcd Resources > VCPU** - 2 (Default)
-
-   .. figure:: images/5.png
+   For this lab, you can leave the default values.
 
 #. Click **Next**.
 
@@ -117,7 +142,6 @@ In this exercise you will create a development Kubernetes cluster with Nutanix K
 #. On the **Network** tab, fill out the following fields:
 
    - **Network Provider** - Flannel (Default)
-   - **VM Network** - Primary (Default)
    - **Service CIDR** - 172.19.0.0/16 (Default)
    - **Pod CIDR** - 172.20.0.0/16 (Default)
 
@@ -127,12 +151,12 @@ In this exercise you will create a development Kubernetes cluster with Nutanix K
 
 #. On the **Storage Class** tab, fill out the following fields:
 
-   - **Storage Class Name** - default-storageclass-*Initials*
-   - **Prism Element Cluster** - *Your Nutanix cluster*
+   - **Storage Class Name** - default-storageclass-*Initials* (initials in lowercase)
+   - **Prism Element Cluster** - *Your Nutanix Cluster IP*
    - **Nutanix Cluster Username** - admin
    - **Nutanix Cluster Password** - *Your password*
+   - **Reclaim Policy** - Delete (Default)
    - **Storage Container Name** - Default
-   - **Reclaim Policy** - Delete
    - **File System** - ext4 (Default)
 
    .. figure:: images/7.png
@@ -149,7 +173,7 @@ In this exercise you will create a development Kubernetes cluster with Nutanix K
 
    .. figure:: images/9.png
 
-   The Karbon cluster has finished provisioning when the **Status** of the cluster is **Running**.
+   The Karbon cluster has finished provisioning when the **Status** of the cluster is **Healthy**.
 
    .. figure:: images/10.png
 
@@ -161,9 +185,7 @@ In this exercise you will create a development Kubernetes cluster with Nutanix K
 
    Additional persistent storage volumes could be leveraged for use cases such as containerized databases.
 
-   You can scale-out your Kubernetes cluster with more worker nodes when needed.
-
-In 15 minutes or less, you have deployed a production-ready Kubernetes cluster with logging (EFK), networking (flannel), and persistent storage services.
+   In 15 minutes or less, you have deployed a production-ready Kubernetes cluster with logging (EFK), networking (flannel), and persistent storage services.
 
 Getting Started with Kubectl
 ++++++++++++++++++++++++++++
@@ -174,9 +196,11 @@ In this exercise you will use ``kubectl`` to perform basic operations against yo
 
 #. From within your *Initials*\ **-Windows-ToolsVM** VM, browse to **Prism Central** and open **Karbon**.
 
-#. Select your *Initials*\ **-karbon** cluster and click **Download kubeconfig**.
+#. Select your *Initials*\ **-karbon** cluster and click **Actions > Download kubeconfig**.
 
    .. figure:: images/12.png
+
+#. Click **Download**, then click **Close**.
 
 #. Open **PowerShell**.
 
@@ -193,14 +217,14 @@ In this exercise you will use ``kubectl`` to perform basic operations against yo
      cd ~
      mkdir .kube
      cd .kube
-     mv ~\Downloads\kubectl* ~\.kube\config
+     mv ~\Downloads\*kubectl* ~\.kube\config
      kubectl get nodes
 
    .. note::
 
      By default, ``kubectl`` looks like a file named ``config`` in the ``~/.kube`` directory. Other locations can be specified using environment variables or by setting the ``--kubeconfig`` flag.
 
-#. Verify that the output of the last command shows 1 master node and 3 worker nodes as **Ready**.
+#. Verify that the output of the last command shows 1 master node and 1 worker node as **Ready**.
 
 #. Next you will check the versions of the Kubernetes client and server by running the following command:
 
@@ -233,6 +257,8 @@ Now that you have successfully run commands against your Kubernetes cluster usin
 
    Kubernetes depends on YAML files to provision applications and define dependencies. YAML files are a human-readable text-based format for specifying configuration information. This application requires two YAML files to be stored in the **wordpress** directory.
 
+  .. note::
+
   If attempting to download the script results in an Access Denied error, log out of any AWS accounts from your browser or open the download link in **Incognito (Private Browsing)** mode.
 
 #. Move both files to the **wordpress** directory using the following command:
@@ -250,7 +276,7 @@ Now that you have successfully run commands against your Kubernetes cluster usin
 
    .. figure:: images/13.png
 
-#. Under **spec: > type:**, change the value from **LoadBalancer** to **NodePort** and save the file. This change is required as Karbon does not yet support LoadBalancer.
+#. Under **spec: > type:**, change the value from **LoadBalancer** to **NodePort** and save the file. (Using a LoadBalancer is outside the scope of this lab.)
 
    .. figure:: images/14.png
 
@@ -413,6 +439,7 @@ Takeaways
 
 What are the key things you should know about **Nutanix Karbon**?
 
+- Karbon is a great use case for internal development, CI/CD, digital transformation or application modernization initiatives
 
 - The primary benefit of Karbon is reduced CapEX and OpEX of managing and operating Kubernetes environments, reducing learning curve and enabling DevOps/ITOps teams to quickly support their development teams to start deploying containerized workloads.
 
